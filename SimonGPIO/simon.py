@@ -88,7 +88,6 @@ def level():
 		clearAll()
 		waiting = True
 		while waiting: #waiting for button to be pressed
-			GPIO.output(lights[i], not  buttons[i]) 
 			for i in range(0, 4): #for each button
 				if (GPIO.input(buttons[i]) == 0): #if the button is enabled
 				
