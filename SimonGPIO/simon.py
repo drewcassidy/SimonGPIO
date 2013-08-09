@@ -49,11 +49,11 @@ def debugLog(text):
 	if Debug:
 		print text
 	
-def blink(color, duration)
+def blink(color, duration):
 	GPIO.output(lights[color], GPIO.HIGH)
 	time.sleep(duration)
 	
-def blinkLight(color, duration)
+def blinkLight(color, duration):
 	try:
 		thread.start_new_thread(blink, (color,duration)) #time will get faster over time in future
 	except:
