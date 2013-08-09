@@ -46,7 +46,7 @@ def clearAll():
 		GPIO.output(i, GPIO.LOW)
 		
 def debugLog(text):
-	if Debug:
+	if debug:
 		print text
 	
 def blink(color, duration):
