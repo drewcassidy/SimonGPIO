@@ -68,7 +68,7 @@ def showPattern(beeps):
 	for i in beeps:
 	
 		blinkLight(i, 0.5) #duration will get faster over time in future
-		tone[i]
+		tone(i)
 		debugLog(colors[i])
 
 		time.sleep(0.5)	
