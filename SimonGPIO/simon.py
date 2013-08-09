@@ -1,15 +1,13 @@
 #! /usr/bin/env python
+
 import RPi.GPIO as GPIO
 import random
 import time
 import sys
 import os
-#global levelNum
+import thread
 
-#340 hz : blue
-#554 hz : yellow
-#440 hz : red
-#660 hz : green
+########################## GPIO Setup ##########################
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -22,41 +20,70 @@ GPIO.setup(11, GPIO.OUT)
 GPIO.setup(13, GPIO.OUT)
 GPIO.setup(16, GPIO.OUT)
 GPIO.setup(18, GPIO.OUT)
-#####preferences##########################################################
-muted = False 
-output = "local" #"local" is for headphone jack, "hdmi" is for hdmi audio
-##########################################################################
 
-buttons = [22, 24, 23, 21]
-lights = [16, 18, 13, 11]
-colors = ["red", "green", "yellow", "blue"]
-sounds = ["toneRed.m4a", "toneGreen.m4a", "toneYellow.m4a", "toneBlue.m4a"]
+########################## Preferences ##########################
+
+muted = False
+output = "local"   #headphone jack = "local", HDMI audio = "hdmi"
+
+buttons = [22, 24, 23, 21]                      #button GPIO pins
+lights = [16, 18, 13, 11]                          #LED GPIO pins
+colors = [                            	           #button colors
+	"red", "green",
+	"yellow", "blue"
+	 ]
+sounds = [			                #audio file names
+	"toneRed.m4a", "toneGreen.m4a",
+	"toneYellow.m4a", "toneBlue.m4a"
+	 ]
+debug = True                                          #Debug mode
 beeps = []
-pushes = []
+
+########################### Functions ###########################
 
 def clearAll():
 	for i in lights:
 		GPIO.output(i, GPIO.LOW)
+		
+def debugLog(text):
+	if Debug:
+		print text
+	
+def blink(color, duration)
+	GPIO.output(lights[color], GPIO.HIGH)
+	time.sleep(duration)
+	
+def blinkLight(color, duration)
+	try:
+		thread.start_new_thread(blink, (color,duration)) #time will get faster over time in future
+	except:
+		print "Error, unable to create thread and blink the " + colors[color] " LED for " + duration + " seconds"
+		
+def tone(sound):
+	if(muted == False):
+		path, file = os.path.split(os.path.realpath(__file__))
+		os.system("omxplayer -w -o" + output + " " + path +"/audio/" + sounds[sound] + ">/dev/null 2>/dev/null &")
+
+def showPattern(beeps):
+	for i in beeps:
+	
+		blinkLight(i, 0.5) #duration will get faster over time in future
+		tone[i]
+		debugLog(colors[i])
+
+		time.sleep(0.5)	
+		
 def levelgen():
 	beeps.append(random.randrange(4))		
 
 def level():
 	global output
+
 	levelgen()
-	prev = 0
-	for i in range(0, 4):
-		GPIO.output(lights[i], GPIO.LOW)	
-	for i in beeps:
-		GPIO.output(lights[i], GPIO.HIGH)
-		print colors[i]
+	clearAll()	
 
-		full_path = os.path.realpath(__file__)
-		path, file = os.path.split(full_path)	
-
-		os.system("omxplayer -w -o" + output + " " + path +"/audio/" + sounds[i] + ">/dev/null 2>/dev/null &")
-		time.sleep(0.5)
-		GPIO.output(lights[i], GPIO.LOW)
-		time.sleep(0.1)	
+	showPattern(beeps)
+	
 	for k, v in enumerate((beeps)): #for each light enabled
 		clearAll()
 		waiting = True
@@ -96,8 +123,6 @@ def main():
 		level()	
 		time.sleep(2)
 
-def playsound(color):
-	if(muted == False):
-		print True
+
 main()	
 
