@@ -57,7 +57,7 @@ def blinkLight(color, duration):
 	try:
 		thread.start_new_thread(blink, (color,duration)) #time will get faster over time in future
 	except:
-		print "Error, unable to create thread and blink the " + colors[color] " LED for " + duration + " seconds"
+		print "Error, unable to create thread"
 		
 def tone(sound):
 	if(muted == False):
