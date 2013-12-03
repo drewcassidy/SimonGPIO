@@ -85,7 +85,7 @@ def level():
 		clearAll()
 		waiting = True
 		while waiting: #waiting for button to be pressed
-			for i in range(0, 4): #for each button
+			for i in range(4): #for each button
 				if (GPIO.input(buttons[i]) == 0): #if the button is enabled
 				
 					full_path = os.path.realpath(__file__)
