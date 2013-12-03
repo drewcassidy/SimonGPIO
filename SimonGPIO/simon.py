@@ -25,7 +25,6 @@ sounds = [			                #audio file names
 debug = True                                          #Debug mode
 beeps = []
 
-
 ########################## GPIO Setup ##########################
 
 GPIO.setmode(GPIO.BOARD)
@@ -39,8 +38,8 @@ for light in lights:
 ########################### Functions ###########################
 
 def clearAll():
-	for i in lights:
-		GPIO.output(i, GPIO.LOW)
+	for light in lights:
+		GPIO.output(light, GPIO.LOW)
 		
 def debugLog(text):
 	if debug:
@@ -49,6 +48,7 @@ def debugLog(text):
 def blink(color, duration):
 	GPIO.output(lights[color], GPIO.HIGH)
 	time.sleep(duration)
+	GPIO.output(lights[color], GPIO.LOW)
 	
 def blinkLight(color, duration):
 	try:
