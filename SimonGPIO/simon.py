@@ -7,20 +7,6 @@ import sys
 import os
 import thread
 
-########################## GPIO Setup ##########################
-
-GPIO.setmode(GPIO.BOARD)
-
-GPIO.setup(21, GPIO.IN)
-GPIO.setup(22, GPIO.IN)
-GPIO.setup(23, GPIO.IN)
-GPIO.setup(24, GPIO.IN)
-
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(16, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
-
 ########################## Preferences ##########################
 
 muted = False
@@ -38,6 +24,17 @@ sounds = [			                #audio file names
 	 ]
 debug = True                                          #Debug mode
 beeps = []
+
+
+########################## GPIO Setup ##########################
+
+GPIO.setmode(GPIO.BOARD)
+
+for button in buttons:
+	GPIO.setup(button, GPIO.IN)
+
+for light in lights:
+	GPIO.setup(light, GPIO.OUT)
 
 ########################### Functions ###########################
 
