@@ -7,20 +7,6 @@ import sys
 import os
 import thread
 
-########################## GPIO Setup ##########################
-
-GPIO.setmode(GPIO.BOARD)
-
-GPIO.setup(21, GPIO.IN)
-GPIO.setup(22, GPIO.IN)
-GPIO.setup(23, GPIO.IN)
-GPIO.setup(24, GPIO.IN)
-
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(16, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
-
 ########################## Preferences ##########################
 
 muted = False
@@ -39,11 +25,21 @@ sounds = [			                #audio file names
 debug = True                                          #Debug mode
 beeps = []
 
+########################## GPIO Setup ##########################
+
+GPIO.setmode(GPIO.BOARD)
+
+for button in buttons:
+	GPIO.setup(button, GPIO.IN)
+
+for light in lights:
+	GPIO.setup(light, GPIO.OUT)
+
 ########################### Functions ###########################
 
 def clearAll():
-	for i in lights:
-		GPIO.output(i, GPIO.LOW)
+	for light in lights:
+		GPIO.output(light, GPIO.LOW)
 		
 def debugLog(text):
 	if debug:
@@ -52,6 +48,7 @@ def debugLog(text):
 def blink(color, duration):
 	GPIO.output(lights[color], GPIO.HIGH)
 	time.sleep(duration)
+	GPIO.output(lights[color], GPIO.LOW)
 	
 def blinkLight(color, duration):
 	try:
@@ -88,7 +85,7 @@ def level():
 		clearAll()
 		waiting = True
 		while waiting: #waiting for button to be pressed
-			for i in range(0, 4): #for each button
+			for i in range(4): #for each button
 				if (GPIO.input(buttons[i]) == 0): #if the button is enabled
 				
 					full_path = os.path.realpath(__file__)
